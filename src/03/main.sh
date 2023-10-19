@@ -1,4 +1,5 @@
 #!/bin/bash
 
-source input.sh
-source output.sh
+source sys_info.sh
+get_sys_info
+source save_file.sh
