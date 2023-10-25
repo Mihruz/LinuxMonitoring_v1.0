@@ -18,6 +18,6 @@ column2_background=$3
 column2_font_color=$4
 
 if [[ $column1_background == $column1_font_color || $column2_background == $column2_font_color ]]; then
-  echo "Error: Font and background colors must not match."
+  echo "Error: font and background colors must not match."
   exit 1
 fi

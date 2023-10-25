@@ -1,32 +1,25 @@
 #!/bin/bash
 
-bg_color=()
-bg_color+=('\e[47m') # white
-bg_color+=('\e[41m') # red
-bg_color+=('\e[42m') # green
-bg_color+=('\e[44m') # blue
-bg_color+=('\e[45m') # purple
-bg_color+=('\e[40m') # black
-
-font_color=()
-font_color+=('\e[37m') # white
-font_color+=('\e[31m') # red
-font_color+=('\e[32m') # green
-font_color+=('\e[34m') # blue
-font_color+=('\e[35m') # purple
-font_color+=('\e[30m') # black
-
+color_code=()
+color_code+=('0') # blank
+color_code+=('37') # white
+color_code+=('31') # red
+color_code+=('32') # green
+color_code+=('34') # blue
+color_code+=('35') # purple
+color_code+=('30') # black
 
 # Сброс цветов
 reset_colors='\e[0m'
 
 print_color(){
-  echo "bg_color{column1_background};font_color{column1_font_color}"
-  echo -e
+  echo "\e[$((${color_code[$1]} + 10))m\e[${color_code[$2]}m"
 }
 
+print_color_1=$(print_color $column1_background $column1_font_color)
+print_color_2=$(print_color $column2_background $column2_font_color)
+
 for i in "${!labels[@]}"; do
-  echo -e "\e[31;47mRed text on white background\e[0m"
-  echo -e "\e[colors{column1_background} + 10;colors{column1_font_color}\e[0m;47m${colors[i]}${labels[i]}${reset_colors} ${values[i]}"
+  echo -e "${print_color_1}${labels[i]}$reset_colors${print_color_2}${values[i]}$reset_colors"
 done
 
