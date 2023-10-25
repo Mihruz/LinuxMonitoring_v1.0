@@ -1,4 +1,6 @@
 #!/bin/bash
 
 source input.sh
-source output.sh
+source sys_info.sh
+source colors.sh
+
