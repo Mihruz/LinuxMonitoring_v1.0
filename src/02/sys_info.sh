@@ -1,5 +1,20 @@
 #!/bin/bash
 
+get_subnet_mask() {
+input_mask=$(ip a | awk '/inet / {print $2}' | cut -d '/' -f 2 | awk 'NR==2')
+num="${input_mask##*/}"
+
+bitmask=$(( 0xffffffff << (32 - num) ))
+
+octet1=$(( (bitmask >> 24) & 0xff ))
+octet2=$(( (bitmask >> 16) & 0xff ))
+octet3=$(( (bitmask >> 8) & 0xff ))
+octet4=$(( bitmask & 0xff ))
+
+formatted_mask="${octet1}.${octet2}.${octet3}.${octet4}"
+echo $formatted_mask
+}
+
 get_sys_info() {
   echo "HOSTNAME = $(hostname)"
   echo "TIMEZONE = $(timedatectl | grep "Time zone" | awk '{print $3}')"
@@ -9,7 +24,7 @@ get_sys_info() {
   echo "UPTIME = $(uptime -p)"
   echo "UPTIME_SEC = $(awk '{print $1}' /proc/uptime)"
   echo "IP = $(ip a | grep 'inet ' | awk 'NR==2 {print $2}' | cut -d '/' -f 1)"
-  echo "MASK = $(/sbin/ifconfig | grep -o 'netmask .*' | awk '{print $2}' | head -n 1)"
+  echo "MASK = $(get_subnet_mask)"
   echo "GATEWAY = $(ip -4 route show default | awk '/via/ {print $3}')"
   echo "RAM_TOTAL = $(grep MemTotal /proc/meminfo | awk '{printf "%.3f GB", $2 / 1024^2}')"
   echo "RAM_USED = $(vmstat -s | grep 'used m' | awk '{ printf "%.3f GB", $1 / 1024^2 }')"
