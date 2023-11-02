@@ -3,7 +3,6 @@
 get_subnet_mask() {
 input_mask=$(ip a | awk '/inet / {print $2}' | cut -d '/' -f 2 | awk 'NR==2')
 num="${input_mask##*/}"
-
 bitmask=$(( 0xffffffff << (32 - num) ))
 
 octet1=$(( (bitmask >> 24) & 0xff ))
