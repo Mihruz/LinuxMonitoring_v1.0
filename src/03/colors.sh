@@ -10,10 +10,10 @@ color_code+=('35') # purple
 color_code+=('30') # black
 
 # Сброс цветов
-reset_colors='\e[0m'
+reset_colors='\033[0m'
 
 print_color(){
-  echo "\e[$((${color_code[$1]} + 10))m\e[${color_code[$2]}m"
+  echo "\033[$((${color_code[$1]} + 10))m\033[${color_code[$2]}m"
 }
 
 print_color_1=$(print_color $column1_background $column1_font_color)
