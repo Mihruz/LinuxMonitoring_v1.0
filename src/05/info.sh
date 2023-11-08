@@ -10,6 +10,7 @@ exec_files=$(find "$path" -type f -executable | wc -l)
 log_files=$(find "$path" -type f -name "*.log" | wc -l)
 archive_files=$(find "$path" -type f \( -name "*.zip" -o -name "*.rar" -o -name "*.tar" -o -name "*.7z" \) | wc -l)
 symlink_files=$(find "$path" -type l | wc -l)
+
 top_10_files(){
   find "$path" -type f -exec du -h {} + | sort -rh | head -10 | awk '{print $2, $1}' | while read file; do
           file_path=$(echo "$file" | awk '{print $1}')
@@ -27,9 +28,11 @@ top_10_exec_files(){
   for file_info in $top_10_executables; do
     file_path=$(echo "$file_info" | cut -f2)
     file_size=$(echo "$file_info" | cut -f1)
-    file_hash=$(sha1sum "$file_path" | awk '{print $1}')
-    echo "$i - $file_path, $(numfmt --to=iec --suffix=B "$file_size"), $file_hash"
-    i=$((i + 1))
+    if [ -f "$file_path" ]; then
+        file_hash=$(sha1sum "$file_path" | awk '{print $1}')
+        echo "$i - $file_path, $(numfmt --to=iec --suffix=B "$file_size"), $file_hash"
+        i=$((i + 1))
+    fi
   done
 }
 
@@ -49,5 +52,4 @@ get_info() {
   top_10_files
   echo "TOP 10 executable files of the maximum size arranged in descending order (path, size and MD5 hash of file): "
   top_10_exec_files
-
 }

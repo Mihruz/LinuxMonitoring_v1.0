@@ -8,6 +8,7 @@ color_code+=('32') # green
 color_code+=('34') # blue
 color_code+=('35') # purple
 color_code+=('30') # black
+
 # Сброс цветов
 reset_colors='\033[0m'
 
