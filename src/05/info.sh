@@ -47,7 +47,6 @@ get_info() {
   echo "Symbolic links = $symlink_files"
   echo "TOP 10 files of maximum size arranged in descending order (path, size and type): "
   top_10_files
-
   echo "TOP 10 executable files of the maximum size arranged in descending order (path, size and MD5 hash of file): "
   top_10_exec_files
 
